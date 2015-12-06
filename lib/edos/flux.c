@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdio.h>
-#include "lib/rk78.h"
+#include "lib/edos/rk78.h"
 
 #define MIN(a,b) (((a)<(b))?(a):(b)) 
 #define MAX(a,b) (((a)>(b))?(a):(b)) 

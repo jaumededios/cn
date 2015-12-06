@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdio.h>
-#include "rk78.h"
-#include "pendol.h"
+#include "lib/edos/rk78.h"
+#include "lib/fields/pendol.h"
 
 #define MIN(a,b) (((a)<(b))?(a):(b)) 
 #define MAX(a,b) (((a)>(b))?(a):(b)) 

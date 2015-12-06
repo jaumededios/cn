@@ -16,6 +16,8 @@ Jaume de Dios: dec 2015
 
 	- lib/
     	#carpeta amb les llibreries
+    	- lib/fields
+    		#els camps d'exemple
 		- lib/edos
 			#fitxers relacionats amb la solucio de edos
 			flux.c #té la funció flux, que executa el rk78
