@@ -1,4 +1,4 @@
-# cn
+# Treball final Càlcul numèric
 Treball final de la assignatura de càlcul numèric
 Jaume de Dios: dec 2015
 
