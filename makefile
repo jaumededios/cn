@@ -13,6 +13,10 @@ LINALG=$(LIB)$(_LINALG)
 _FIELDS=fields/
 FIELDS=$(LIB)$(_FIELDS)
 
+#subcarpeta de LIB on hi ha els camps diversos
+_NEWTON=newton/
+NEWTON=$(LIB)$(_NEWTON)
+
 #executables a la carpeta principal
 EXECS=rf_pendol flux_pendol
 
@@ -72,3 +76,9 @@ $(EDOS)rk78.o: $(EDOS)rk78.c
 #codi objecte del qrres
 $(LINALG)qrres.o: $(LINALG)qrres.c
 	gcc -c -Wall -o $(LINALG)qrres.o $(LINALG)qrres.c -lm
+
+# ! ---------- Programes relacionats amb MÈTODE DE NEWTON ------------ !
+
+#codi objecte del qrres
+$(NEWTON)newton.o: $(NEWTON)newton.c $(LINALG)qrres.o
+	gcc -c -Wall -o $(NEWTON)newton.o $(NEWTON)newton.c -lm

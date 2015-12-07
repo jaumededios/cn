@@ -51,7 +51,8 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
    
    double s,c,d; //la c es la alpha i la d la beta
    int k,i, j;
-   double U[m]; //No mola per a m gran...
+   double U[m]; 
+
    for(k=0; k<n;k++){
 
          printf("Matriu A_%d:\n",k );
