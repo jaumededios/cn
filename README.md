@@ -37,3 +37,4 @@ Jaume de Dios: dec 2015
             [_Resolució de sistemes d'equacions lineals sobredeterminats mitjançant el mètode de Housholder_]
 	- lib/newton
 		[_implementació del mètode de Newton en diverses variables utilitzant linalg_] 
+        + Working on it right now!
