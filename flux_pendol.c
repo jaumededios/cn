@@ -1,42 +1,10 @@
 #include <math.h>
 #include <stdio.h>
-#include "lib/edos/rk78.h"
+
+#include "lib/edos/flux.h"
 #include "lib/fields/pendol.h"
 
-#define MIN(a,b) (((a)<(b))?(a):(b)) 
-#define MAX(a,b) (((a)>(b))?(a):(b)) 
-
 #define N 2
-#define EPSILON 1E-14
-
-int flux (
-  double *t, double x[], double *h, double T,
-  double pasmin, double pasmax, double tol, int npasmx,
-  int n,
-  int (*camp)(int n, double t, double x[], double f[], void *prm),
-  void *prm
-){ 
-  
-  double Npasmin, Npasmax;
-  double diff;
-  double i;
-  do{
-    i++;
-    diff=fabs(*t-T);
-    Npasmin=MIN(diff, pasmin);
-    Npasmax=MIN(diff, pasmax);
-    *h=MIN(Npasmax, *h);
-    rk78(t,x,h,Npasmin, Npasmax,tol,n,camp,prm);
-  }
-
-  while(diff>EPSILON && i<npasmx);
-  if(i==npasmx){
-    fprintf(stderr, "No ha convergit en %d iteracions, ens rendim.\n", npasmx);
-    return 1;
-  }
-    
-  return 0;
-}
 
 int main (int argc, char *argv[]) {
    double h0, hmin, hmax, tol, t, x[N], h, T;

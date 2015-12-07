@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdio.h>
-#include "lib/edos/rk78.h"
+#include "rk78.h"
 
 #define MIN(a,b) (((a)<(b))?(a):(b)) 
 #define MAX(a,b) (((a)>(b))?(a):(b)) 
@@ -64,8 +64,6 @@ int flux (
 		
 	return 0;
 }
-
-
 
 #undef MIN
 #undef MAX

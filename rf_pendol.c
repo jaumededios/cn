@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "rk78.h"
-#include "pendol.h"
+#include "lib/edos/rk78.h"
+#include "lib/fields/pendol.h"
 
 /*
  * Per compilar:
