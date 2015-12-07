@@ -4,25 +4,26 @@ Jaume de Dios: dec 2015
 
 1) Compilar:
 
-	Per a compilar-ho tot:          "make all"
-	Per a recompilar-ho tot:        "make remake"
-	Per a netejar de codis objecte: "make clean"
+- Per a compilar-ho tot:          "make all"
+
+- Per a recompilar-ho tot:        "make remake"
+
+- Per a netejar de codis objecte: "make clean"
 
 2) Estructura:
 
-	Main folder:
 
-	- 
-
-	- lib/
-    	#carpeta amb les llibreries
-    	- lib/fields
-    		#els camps d'exemple
-		- lib/edos
-			#fitxers relacionats amb la solucio de edos
-			flux.c #té la funció flux, que executa el rk78
-		- lib/linalg
-			#fitxers relacionats amb àlgebra lineal
-		- lib/newton
-			#implementació del mètode de Newton en diverses
-			 variables utilitzant linalg
+- lib/
+    _carpeta amb les llibreries_
+    - lib/fields
+    	[_els camps d'exemple_]
+        
+	- lib/edos
+		[_fitxers relacionats amb la solucio de edos_]
+        
+		+ flux.c 
+        	[_té la funció flux, que executa el rk78 entre temps fixats_]
+	- lib/linalg
+		[_fitxers relacionats amb àlgebra lineal_]
+	- lib/newton
+		[_implementació del mètode de Newton en diverses variables utilitzant_] linalg
