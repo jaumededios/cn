@@ -32,9 +32,10 @@ double norm(double* x, int n){
 
 int newton(int n, //dim
 		   double*x, //proposta I solució
-	       int func(double* , double* , double*), //funcio, que ha de tenir, donat x: F, dF encadenats
+	       int func(double* laX, double* guardaF, double* guardaDF, double* params), //funcio, que ha de tenir, donat x: F, dF encadenats
 		   double tolf, double tolx,
-		   int maxit){
+		   int maxit,
+		   double*params){
 	double ef[n*n+n];
 	double dr[n];
 	double corr[n];
