@@ -43,7 +43,7 @@ int newton(int n, //dim
 	int nits=0;
 	do{
 		nits++;
-		func(x, ef, ef+n);
+		func(x, ef, ef+n,params);
 		qrres (n, n, ef+n, dr, ef, corr);
 		for(i=0; i<n;i++) x[i]-=corr[i];
 

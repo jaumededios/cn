@@ -1,32 +1,52 @@
+
+
+
 #carpeta de la llibreria amb les llibreries
 LIB=lib/
-
 #subcarpeta de LIB on hi ha tot el relacionat amb edos
 _EDOS=edos/
 EDOS=$(LIB)$(_EDOS)
-
 #subcarpeta de LIB on hi ha tot el relacionat amb àlgebra lineal
 _LINALG=linalg/
 LINALG=$(LIB)$(_LINALG)
-
 #subcarpeta de LIB on hi ha els camps diversos
 _FIELDS=fields/
 FIELDS=$(LIB)$(_FIELDS)
-
 #subcarpeta de LIB on hi ha els camps diversos
 _NEWTON=newton/
 NEWTON=$(LIB)$(_NEWTON)
+#subcarpeta de LIB on hi ha els camps diversos
+_PERIOD=period/
+PERIOD=$(LIB)$(_PERIOD)
+
+
 
 #executables a la carpeta principal
-EXECS=rf_pendol flux_pendol
+EXECS = rf_pendol\
+		flux_pendol\
+		period_pendol
 
 
+# Coses que fan falta en general per a fer  tot lo numèric
+NUMERIC = $(EDOS)flux.o \
+		  $(EDOS)rk78.o \
+		  $(LINALG)qrres.o \
+		  $(PERIOD)troba_periodiques.o 
+# camps amb els que podem treballar 
+FIELDLIST = $(FIELDS)pendol.o \
+		    $(FIELDS)pendol_var.o 
 
-# ! ---------- Codis relacionats amb el managment de tot plegat ----------- !
+LIBRARY = $(NUMERIC) \
+          $(FIELDS)
+          
+# ! ---------- Codis relacionats amb el management de tot plegat ----------- !
 
 #build de tot
 
-all: $(EXECS)
+all: $(EXECS) 
+
+libraries: $(LIBRARY)
+
 
 #neteja tots els object code de la carpeta principal
 clean: clean_lib
@@ -34,31 +54,61 @@ clean: clean_lib
 
 #neteja tots els objectes de la llibreria
 clean_lib:
-	rm -f $(LIB)/*/*.o
+	rm -f $(LIB)*/*.o
 
 #neteja tot el que no sigui codi
 realclean: clean
 	rm -f $(EXECS)
 
 #neteja tot el que no sigui codi i recompila-ho tot
-remake: realclean all
+remake: realclean all libraries
+
+
 
 
 # ! ---------- Programes Finals -------------- !
 
 #construeix el programa que et dona òrbites del pèndol
-rf_pendol: $(FIELDS)pendol.o $(EDOS)rk78.o
-	gcc -Wall -o rf_pendol rf_pendol.c $(FIELDS)pendol.o $(EDOS)rk78.o -lm
+period_pendol: period_pendol.c \
+			   $(NUMERIC) \
+			   $(FIELDS)pendol_var.o
+
+	gcc -Wall -o period_pendol period_pendol.c \
+			   $(NUMERIC) \
+			   $(FIELDS)pendol_var.o \
+	           -lm
+
+#construeix el programa que et dona òrbites del pèndol
+rf_pendol: rf_pendol.c \
+			   $(FIELDS)pendol.o \
+			   $(EDOS)rk78.o 
+
+	gcc -Wall -o rf_pendol rf_pendol.c \
+			   $(FIELDS)pendol.o  \
+			   $(EDOS)rk78.o \
+			   -lm
 
 #construeix el programa que et dona el flux del pèndol
-flux_pendol: $(FIELDS)pendol.o $(EDOS)flux.o 
+flux_pendol: flux_pendol.c $(FIELDS)pendol.o $(EDOS)flux.o 
 	gcc -Wall -o flux_pendol flux_pendol.c $(FIELDS)pendol.o $(EDOS)flux.o $(EDOS)rk78.o -lm
+
+
+
+
 
 # ! ---------- Programes relacionats amb els camps ------------ !
 
 #codi del pendol
 $(FIELDS)pendol.o: $(FIELDS)pendol.c
 	gcc -c -Wall -o $(FIELDS)pendol.o $(FIELDS)pendol.c -lm
+
+#codi del pendol amb variacionals
+$(FIELDS)pendol_var.o: $(FIELDS)pendol_var.c
+	gcc -c -Wall -o $(FIELDS)pendol_var.o $(FIELDS)pendol_var.c -lm
+
+
+
+
 
 # ! ---------- Programes relacionats amb el calcul d'EDOS ------------ !
 
@@ -71,14 +121,33 @@ $(EDOS)flux.o: $(EDOS)flux.c  $(EDOS)rk78.o
 $(EDOS)rk78.o: $(EDOS)rk78.c
 	gcc -c -Wall -o $(EDOS)rk78.o $(EDOS)rk78.c -lm
 
+
+
+
+
 # ! ---------- Programes relacionats amb COSES LINEALS ------------ !
 
 #codi objecte del qrres
 $(LINALG)qrres.o: $(LINALG)qrres.c
 	gcc -c -Wall -o $(LINALG)qrres.o $(LINALG)qrres.c -lm
 
+
+
+
+
+
 # ! ---------- Programes relacionats amb MÈTODE DE NEWTON ------------ !
 
-#codi objecte del qrres
+#codi objecte del newton #al final no l'utilitzem per que no es nxn!!!
 $(NEWTON)newton.o: $(NEWTON)newton.c $(LINALG)qrres.o
 	gcc -c -Wall -o $(NEWTON)newton.o $(NEWTON)newton.c -lm
+
+
+
+
+
+
+# ! -------- Programa per a trobar es òrbites periòdiques
+
+$(PERIOD)troba_periodiques.o: $(PERIOD)troba_periodiques.c $(LINALG)qrres.o $(EDOS)flux.o
+	gcc -c -Wall -o $(PERIOD)troba_periodiques.o $(PERIOD)troba_periodiques.c -lm

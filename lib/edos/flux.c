@@ -21,11 +21,15 @@ int flux (
 	int (*camp)(int n, double t, double x[], double f[], void *prm),
 	void *prm     	//peràmetres per al sistema
 ){
-
+	double f[n];
 	double Npasmin, Npasmax;
 	double diff;
-	double i;
-
+	int i;
+	camp(n, *t,x, f, prm);
+	for(i=0; i<n;i++){
+		printf("%lf, ", f[i]);
+	}
+	printf("\n");
 	do{
 		i++;
 		/*
@@ -61,7 +65,11 @@ int flux (
 		        npasmx);
 		return 1;
 	}
-		
+	printf("Hem calculat la posició en temps %lf amb %d iteracions\n",T,i);
+	for(i=0; i<n;i++){
+		printf("%lf, ", x[i]);
+	}
+	printf("\n");
 	return 0;
 }
 

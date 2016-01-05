@@ -48,18 +48,15 @@ void printMatrix(int m, int n, double* a){
    return;
 }
 */
-
-
 void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
    
    double s,c,d; //la c es la alpha i la d la beta
    int k,i, j;
    double U[m]; 
-
    double before[m*n];
    double beforev[m];
    double prod[m];
-   memcpy(before, a, m*n*sizeof(double));
+   memcpy(before, a, m*m*sizeof(double));
 
    if (b!=NULL)
       for(i=0;i<m;i++){
@@ -67,50 +64,36 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
          beforev[i]=b[i];
          }
 
-
    for(k=0; k<n;k++){
 
 
 
 
-         SUM(A(i,k)*A(i,k) , k , m, s);
-         s=SGN(A(k,k))*sqrt(s); 
+   		SUM(A(i,k)*A(i,k) , k , m, s);
+   		s=SGN(A(k,k))*sqrt(s); 
 
-         d=1/(s*s+s*A(k,k)); //NO definida a [Alsedà]?
+   		d=1/(s*s+s*A(k,k)); //NO definida a [Alsedà]?
 
-         // El U+k és per a simplificar el for de baix
-         // estem copiant m-k blocs de memoria des de 
-         // la posició A_kk en columna a U
+   		// El U+k és per a simplificar el for de baix
+   		// estem copiant m-k blocs de memoria des de 
+   		// la posició A_kk en columna a U
 
-         memcpy(U+k,(a+C(k,k)), (m-k)*sizeof(double) );
+   		memcpy(U+k,(a+C(k,k)), (m-k)*sizeof(double) );
 
-         U[k]+=s; //estem sumant dos coses del mateix signe
-                  //per tant MAI es zero si A es no singular
+   		U[k]+=s; //estem sumant dos coses del mateix signe
+   		         //per tant MAI es zero si A es no singular
                   //(resposta a la pregunta de classe)
          //printf("Uk:\n");
          //printMatrix(m-k,1,U+k);
-         dr[k]=-s;
-         for(j=k;j<n;j++){
+   		dr[k]=-s;
+   		for(j=k+1;j<n;j++){
 
-            SUM(d*U[i]*A(i,j) , k , m, c)
-            //printf("alfa: %lf\n", c);
-            for(i=k; i<m; i++){
-               A(i,j)-=c*U[i];
-            }
-
-
-
-
-                                                         if(j==k && 0){
-                                                            printf("\tpx:\n\t");
-                                                            for(i=0;i<m;i++)
-                                                               printf(" ,%.2lf",A(i,k));
-
-                                                         }
-
-
-            
-         }
+   			SUM(d*U[i]*A(i,j) , k , m, c)
+   			//printf("alfa: %lf\n", c);
+   			for(i=k; i<m; i++){
+   				A(i,j)-=c*U[i];
+   			}
+   		}
          //printf("got here!\n");
          memcpy((a+C(k,k)), U+k, (m-k)*sizeof(double));
 
@@ -118,27 +101,24 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
          //printf("diagonal:\n");
          //printMatrix(n,1,dr);
 
-         if(b==NULL) continue;
+   		if(b==NULL) continue;
 
-         SUM(d*U[i]*b[i] , k , m, c)
+   		SUM(d*U[i]*b[i] , k , m, c)
+   		for(i=k;i<m;i++)
+   			b[i]=b[i]-c*U[i];
 
-         for(i=k;i<m;i++)
-            b[i]=b[i]-c*U[i];
+	}
 
-        
-   }
+	if(b==NULL) return;
 
-   if(b==NULL) return;
-
-   // calcul de la solucio
+	// calcul de la solucio
+	
+	j=n;
+ 	while(j --> 0){
+ 		SUM(x[i]*A(j,i), j+1, n, c );
+ 		x[j]=(b[j]-c)/dr[j];
+	}
    
-   j=n;
-   while(j --> 0){
-      SUM(x[i]*A(j,i), j+1, n, c );
-      x[j]=(b[j]-c)/dr[j];
-   }
-
-/*
    printf("m,n:%d,%d\n",m,n );
    for(i=0; i<m;i++) for(j=0;j<n;j++)
       prod[i]+=x[j]*before[i+m*j];
@@ -151,21 +131,14 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
    for(i=0;i<m;i++)
       printf(" ,%.2lf", beforev[i]);
    printf("\n");
-
-
    printf("Ax:\n");
    for(i=0;i<m;i++)
       printf(" ,%.2lf", prod[i]);
    printf("\n");
-
-   printf("\nNb:\n");
-   for(i=0;i<m;i++)
-      printf(" ,%.2lf", b[i]);
-   printf("\n");
-*/
-
-   return;
+   //printMatrix(n,1,x);
+	return;
 }
+
 #undef SGN
 #undef A
 #undef C
