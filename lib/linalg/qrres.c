@@ -55,23 +55,9 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
    double s,c,d; //la c es la alpha i la d la beta
    int k,i, j;
    double U[m]; 
-/*
-   double before[m*n];
-   double beforev[m];
-   double prod[m];
-   memcpy(before, a, m*n*sizeof(double));
-   
-   if (b!=NULL)
-      for(i=0;i<m;i++){
-         prod[i]=0; 
-         beforev[i]=b[i];
-         }
-  */ 
+
 
    for(k=0; k<n;k++){
-
-
-
 
          SUM(A(i,k)*A(i,k) , k , m, s);
          s=SGN(A(k,k))*sqrt(s); 
@@ -87,24 +73,19 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
          U[k]+=s; //estem sumant dos coses del mateix signe
                   //per tant MAI es zero si A es no singular
                   //(resposta a la pregunta de classe)
-         //printf("Uk:\n");
-         //printMatrix(m-k,1,U+k);
+
          dr[k]=-s;
          for(j=k;j<n;j++){
 
             SUM(d*U[i]*A(i,j) , k , m, c)
-            //printf("alfa: %lf\n", c);
+
             for(i=k; i<m; i++){
                A(i,j)-=c*U[i];
             }
 
          }
-         //printf("got here!\n");
+
          memcpy((a+C(k,k)), U+k, (m-k)*sizeof(double));
-
-
-         //printf("diagonal:\n");
-         //printMatrix(n,1,dr);
 
          if(b==NULL) continue;
 
@@ -112,8 +93,6 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
 
          for(i=k;i<m;i++)
             b[i]=b[i]-c*U[i];
-
-        
    }
 
    if(b==NULL) return;
@@ -125,29 +104,6 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
       SUM(x[i]*A(j,i), j+1, n, c );
       x[j]=(b[j]-c)/dr[j];
    }
-
-/*
-   printf("m,n:%d,%d\n",m,n );
-   
-   for(i=0; i<m;i++) for(j=0;j<n;j++)
-      prod[i]+=x[j]*before[i+m*j];
-
-   printf("x:\n");
-   for(i=0;i<n;i++)
-      printf(" ,%.2lf",x[i]);
-
-   printf("\nb:\n");
-   for(i=0;i<m;i++)
-      printf(" ,%.2lf", beforev[i]);
-   printf("\n");
-
-
-
-   printf("\nNb:\n");
-   for(i=0;i<m;i++)
-      printf(" ,%.2lf", b[i]);
-   printf("\n");
-*/
 
    return;
 }

@@ -11,9 +11,9 @@ int main(void){
 	double xx[7]={3.051858, 
 			      -0.988950,         0, 0.003235, 
 			              0, -0.999225, 0};
-	double tol=1E-6;
+	double tol=1E-10;
 
-	int maxit=30;
+	int maxit=100;
 	double cg[7]={0,1,0,
 				  0,0,0,
 				  0};
@@ -34,6 +34,10 @@ int main(void){
 	ham,
 	camp,
 	prm);
+	fprintf(stderr,"Coordenades del resultat:\n");
+	fprintf(stderr,"q = (%.10G,\t%.10G,\t%.10G)\n", xx[1],xx[2],xx[3]);
+	fprintf(stderr,"p = (%.10G,\t%.10G,\t%.10G)\n", xx[4],xx[5],xx[6]);
+	fprintf(stderr,"T =  %G", xx[0]);
 	return 0;
 
 }

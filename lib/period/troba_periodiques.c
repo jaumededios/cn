@@ -33,10 +33,12 @@ void printVector(int n, double*a){
 	printf("%lf)\n", a[n-1]);
 }
 
-
-
-
-
+double norm(double* x, int n){
+	int i;
+	double nrm=0;
+	for(i=0; i<n;i++) nrm+=x[i]*x[i];
+	return sqrt(nrm);
+}
 
 int opham_fdf (
 	int m, double hh, double xx[], double cg[], double f[], double df[],
@@ -52,20 +54,22 @@ int opham_fdf (
 	int tn=(df==NULL)?n:(n*n+n);
 	double fdf[tn];
 	double t0=0;
-
-
+	int iret;
 	memcpy(fdf,x0,n*sizeof(double));
 	IDENITYMATRIX(fdf+n, n);
 
-	////aqui creiem que hi ha un problema gran: 
-				//el flux no funciona!!
 
-		
-
-	flux(&t0,fdf,&h0rk,*T,hminrk,hmaxrk,tolrk,npasmxrk,tn,camp,prm);
-
+	iret=flux(&t0,fdf,&h0rk,*T,hminrk,hmaxrk,tolrk,npasmxrk,tn,camp,prm);
+	if(iret){
+		fprintf(stderr, "opham_fdf():: Error en el càlcul del flux\n");
+		return iret;
+	}
 	//Passem a construir la F:
-	ham(x0,f,prm);
+	iret=ham(x0,f,prm);
+	if(iret){
+		fprintf(stderr, "opham_fdf():: Error en el càlcul del hamiltonià\n");
+		return iret;
+	}
 	f[0]-=hh;
 
 	f[1]=0;
@@ -75,26 +79,26 @@ int opham_fdf (
 	memcpy(f+2,fdf, n*sizeof(double));
 	for(i=0;i<n;i++) f[i+2]-=x0[i];
 
-
-
 	//construim la primera columna!
 	if(df==NULL) return 0;
 
 	//primera fila
 	df[0]=0;
 	df[1]=0;
-	camp(n,*T,fdf,df+2,prm);
-
+	iret=camp(n,*T,fdf,df+2,prm);
+	if(iret){
+		fprintf(stderr, "opham_fdf():: Error en el càlcul del camp\n");
+		return iret;
+	}
 
 	double*df2=df+2+n; // ja m'oblido de la primera columna
-
-	//calcul de dH
-	//epic guarrada: em guardo el camp en un tros de df
-	//que esta buit encara, i aixi no inicialitzo memoria
-	// despres la moc on m'interessa
 	double lloc[n];
-	camp(n,0,x0,lloc,prm);
 
+	iret=camp(n,0,x0,lloc,prm);
+	if(iret){
+		fprintf(stderr, "opham_fdf():: Error en el càlcul del camp\n");
+		return iret;
+	}
 
 	for(i=m; i<n; i++) df2[i*(2+n)]=+lloc[i-m];	
 	for(i=0; i<m; i++) df2[i*(2+n)]=-lloc[i+m];
@@ -120,12 +124,6 @@ int opham_fdf (
 
 
 
-double norm(double* x, int n){
-	int i;
-	double nrm=0;
-	for(i=0; i<n;i++) nrm+=x[i]*x[i];
-	return sqrt(nrm);
-}
 
 int opham (
 int m, double hh, double xx[], double tol, int maxit, double cg[],
@@ -135,6 +133,7 @@ int (*camp)(int n, double t, double x[], double f[], void *prm),
 void *prm){
 	int n=2*m;
 	int i;
+	double iret;
 	double f[n+2];
 	double df[(n+2)*(n+1)];
 	double dr[n+2]; 
@@ -142,12 +141,17 @@ void *prm){
 	int nits=0;
 	do{
 		nits++;
-		printf("========================================\n");
-		opham_fdf (m, hh, xx, cg, f, df,
-				   h0rk, hminrk, hmaxrk, tolrk, npasmxrk,
-				   ham, camp,  prm);
+		//printf("========================================\n");
+		iret=opham_fdf (m, hh, xx, cg, f, df,
+					   h0rk, hminrk, hmaxrk, tolrk, npasmxrk,
+					   ham, camp,  prm);
+		if(iret){
+		fprintf(stderr, "opham_df():: Error en el calcul"
+		                "del camp o la diferencial.\n");
+		return -1;
+		}
 		qrres (n+2, n+1, df, dr, f, corr);
-
+/*
 		printf("Correccio de (t,x) (xn+1=xn-c):\n");
 		printVector(n,corr);
 
@@ -156,13 +160,14 @@ void *prm){
 		printf("Periode: %lf\n", xx[0]);
 
 		printf("Norma de f %lf\n", norm(f,n+2));
-
+*/
 		for(i=0; i<n+1;i++) xx[i]-=corr[i];
 
 
 
 		if(nits>maxit){
-			fprintf(stderr, "Mètode de Newton no ha convergit!\n");
+			fprintf(stderr, "opham_df():: Mètode de Newton no ha convergit en %d iteracions\n",
+				maxit);
 			return -1;
 		}
 	}

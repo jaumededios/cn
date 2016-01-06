@@ -25,7 +25,8 @@ PERIOD=$(LIB)$(_PERIOD)
 EXECS = rf_pendol\
 		flux_pendol\
 		period_pendol\
-		period_halo
+		period_halo\
+		continue_halo
 
 
 # Coses que fan falta en general per a fer  tot lo numèric
@@ -70,7 +71,18 @@ remake: realclean all libraries
 
 # ! ---------- Programes Finals -------------- !
 
-#construeix el programa que et dona òrbites del pèndol
+
+#construeix el programa que et continua el halo
+continue_halo: continue_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o 
+
+	gcc -Wall -o continue_halo continue_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o \
+	           -lm
+
+#construeix el programa que et dona òrbites halo
 period_halo:   period_halo.c \
 			   $(NUMERIC) \
 			   $(FIELDS)rtbp.o 

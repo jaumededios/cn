@@ -61,7 +61,10 @@ int rk78 (double *t, double x[], double *h,
                b[l]+=bet*r[n*k+l];
          }
    iret=camp(n,tt,b/*x*/,r+n*j/*f*/,prm);
-   if (iret) return iret;
+   if (iret) {
+    fprintf(stderr, "rk78():: t %G: Error en el càlcul del camp.\n", *t);
+    return iret;
+    }
       }
       d=0;
       for (l=0; l<n; l++) {

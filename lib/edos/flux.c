@@ -25,6 +25,7 @@ int flux (
 	double Npasmin, Npasmax;
 	double diff;
 	int i=0;
+	int iret;
 	/*
 	printf("Condicns inicials\n");
 	for(i=0;i<n;i++) printf("%lf ", x[i]);
@@ -62,16 +63,18 @@ int flux (
 		Npasmin = MIN(diff, pasmin);
 		Npasmax = MIN(diff, pasmax);
 		*h = MIN(Npasmax, *h);
-
-		rk78(t, x, h, Npasmin, Npasmax, tol, n, camp, prm);
+		iret=rk78(t, x, h, Npasmin, Npasmax, tol, n, camp, prm);
+		if (iret){
+			fprintf(stderr, "flux():: Error en el càlcul de rk78\n");
+		};
 	}
 
 	while(diff > EPSILON  &&  i < npasmx);
 
 	if(i == npasmx){
 		fprintf(stderr, 
-		        "No ha convergit en %d iteracions, ens rendim.\n", 
-		        npasmx);
+		        "flux():: t %G: No ha convergit en %d iteracions.\n", 
+		        *t,npasmx);
 		return 1;
 	}
 	/*
