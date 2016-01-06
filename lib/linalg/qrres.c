@@ -55,18 +55,18 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
    double s,c,d; //la c es la alpha i la d la beta
    int k,i, j;
    double U[m]; 
-
+/*
    double before[m*n];
    double beforev[m];
    double prod[m];
    memcpy(before, a, m*n*sizeof(double));
-
+   
    if (b!=NULL)
       for(i=0;i<m;i++){
          prod[i]=0; 
          beforev[i]=b[i];
          }
-
+  */ 
 
    for(k=0; k<n;k++){
 
@@ -98,18 +98,6 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
                A(i,j)-=c*U[i];
             }
 
-
-
-
-                                                         if(j==k && 0){
-                                                            printf("\tpx:\n\t");
-                                                            for(i=0;i<m;i++)
-                                                               printf(" ,%.2lf",A(i,k));
-
-                                                         }
-
-
-            
          }
          //printf("got here!\n");
          memcpy((a+C(k,k)), U+k, (m-k)*sizeof(double));
@@ -140,6 +128,7 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
 
 /*
    printf("m,n:%d,%d\n",m,n );
+   
    for(i=0; i<m;i++) for(j=0;j<n;j++)
       prod[i]+=x[j]*before[i+m*j];
 
@@ -153,10 +142,6 @@ void qrres (int m, int n, double *a, double *dr, double *b, double *x) {
    printf("\n");
 
 
-   printf("Ax:\n");
-   for(i=0;i<m;i++)
-      printf(" ,%.2lf", prod[i]);
-   printf("\n");
 
    printf("\nNb:\n");
    for(i=0;i<m;i++)

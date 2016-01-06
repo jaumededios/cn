@@ -101,7 +101,7 @@ int rk78 (double *t, double x[], double *h,
    }
    else if (fabs(*h)>hmax) { /* els limits permesos. */
       (*h)=SGN(*h)*hmax;
-      fprintf(stderr,"rk78():: t %G : ajusto a banana pasmax %G\n", *t, hmax);
+      // fprintf(stderr,"rk78():: t %G : ajusto a pasmax %G\n", *t, hmax);
    }
    return 0;
 }

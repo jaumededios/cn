@@ -9,24 +9,34 @@
 
 #define IDENITYMATRIX(x,n) for(i=0; i<n*n;i++) (x)[i]= (i/n==i%n?1:0)
 
+
+
 void printMatrix(int m, int n, double* a){
    int i,j;
    for(i=0; i<m;i++){
-      for(j=0;j<n;j++)
+      for(j=0;j<n;j++){
          printf("%lf\t", a[i+j*m]);
+      }
       printf("\n");
    }
    printf("\n");
    return;
 }
 
+
 void printVector(int n, double*a){
 	int i;
 	printf("(");
-	for(i=0; i<n-1;i++)
+	for(i=0; i<n-1;i++){
 		printf("%lf, ", a[i]);
+	}
 	printf("%lf)\n", a[n-1]);
 }
+
+
+
+
+
 
 int opham_fdf (
 	int m, double hh, double xx[], double cg[], double f[], double df[],
@@ -43,18 +53,17 @@ int opham_fdf (
 	double fdf[tn];
 	double t0=0;
 
-	printf("\nx[0]:  ");
-	printVector(n, x0);
 
 	memcpy(fdf,x0,n*sizeof(double));
 	IDENITYMATRIX(fdf+n, n);
 
 	////aqui creiem que hi ha un problema gran: 
-	//el flux no funciona!!
-	printMatrix(n,n,fdf+n);
+				//el flux no funciona!!
+
+		
+
 	flux(&t0,fdf,&h0rk,*T,hminrk,hmaxrk,tolrk,npasmxrk,tn,camp,prm);
 
-	printMatrix(n,n,fdf+n);
 	//Passem a construir la F:
 	ham(x0,f,prm);
 	f[0]-=hh;
@@ -66,14 +75,8 @@ int opham_fdf (
 	memcpy(f+2,fdf, n*sizeof(double));
 	for(i=0;i<n;i++) f[i+2]-=x0[i];
 
-	printf("t:  %.2lf",*T );
 
-	printf("\nx[t]:  ");
-	printVector(n, fdf);
-	//passem a construir la dF
-	printf("f:  ");
-	printVector(n+2,f);
-	printf("\n");
+
 	//construim la primera columna!
 	if(df==NULL) return 0;
 
@@ -89,34 +92,33 @@ int opham_fdf (
 	//epic guarrada: em guardo el camp en un tros de df
 	//que esta buit encara, i aixi no inicialitzo memoria
 	// despres la moc on m'interessa
+	double lloc[n];
+	camp(n,0,x0,lloc,prm);
 
-	camp(n,0,xx,df2,prm);
 
-	for(i=m; i<n; i++) df2[i*(2+n)]=+df2[i-m];	
-	for(i=0; i<m; i++) df2[i*(2+n)]=-df2[i+m];
+	for(i=m; i<n; i++) df2[i*(2+n)]=+lloc[i-m];	
+	for(i=0; i<m; i++) df2[i*(2+n)]=-lloc[i+m];
 
 
 	//calcul de dG
 	for(i=0; i<n; i++) df2[i*(2+n)+1]=cg[i];
 
 	//copia del dF ja calculat abans i resta de la Id
-	int j;
-	for(i=0; i<n;i++){
-		printf("\n\t");
-		for(j=0;j<n;j++){
-			printf("%lf\t", fdf[n*j+i+n] );
-		}
-	}
-	printf("\n");
+
 	for(i=0;i<n;i++) memcpy(df2+2+(2+n)*i,fdf+n*(i+1), n*sizeof(double));
 	for(i=0;i<n;i++) df2[2+(3+n)*i]-=1;
 
-	printf("df:\n");
-	printMatrix(n+2,n+1,df);
 
+	//memcpy(df,nfdf,(n+2)*(n+1)*sizeof(double));
 	return 0;
 
 }
+
+
+
+
+
+
 
 double norm(double* x, int n){
 	int i;
@@ -145,12 +147,19 @@ void *prm){
 				   h0rk, hminrk, hmaxrk, tolrk, npasmxrk,
 				   ham, camp,  prm);
 		qrres (n+2, n+1, df, dr, f, corr);
-		printf("Correccio de (t,x):\n");
-		for(i=0;i<n+1;i++) printf(", %lf\n", corr[i]);
- 		printf("\n");
+
+		printf("Correccio de (t,x) (xn+1=xn-c):\n");
+		printVector(n,corr);
+
+		printf("Valor de x:\n");
+		printVector(n,xx+1);
+		printf("Periode: %lf\n", xx[0]);
+
+		printf("Norma de f %lf\n", norm(f,n+2));
+
 		for(i=0; i<n+1;i++) xx[i]-=corr[i];
 
-		printf("NOrma de f %lf\n", norm(f,n+2));
+
 
 		if(nits>maxit){
 			fprintf(stderr, "Mètode de Newton no ha convergit!\n");

@@ -21,17 +21,26 @@ int flux (
 	int (*camp)(int n, double t, double x[], double f[], void *prm),
 	void *prm     	//peràmetres per al sistema
 ){
-	double f[n];
+
 	double Npasmin, Npasmax;
 	double diff;
-	int i;
-	camp(n, *t,x, f, prm);
-	for(i=0; i<n;i++){
-		printf("%lf, ", f[i]);
-	}
+	int i=0;
+	/*
+	printf("Condicns inicials\n");
+	for(i=0;i<n;i++) printf("%lf ", x[i]);
 	printf("\n");
+	camp(n, *t,x, f, prm);
+	for(i=0;i<n;i++) printf("%lf ", f[i]);
+	printf("\n");
+	printf("N:_%d\n", n);
+
+	printf("T:%lf\n", fabs(*t - T));
+*/
+	i=0;
 	do{
 		i++;
+
+
 		/*
 		La idea és simple:
 			-en cada pas posem com a pas màxim el mínim entre
@@ -65,11 +74,10 @@ int flux (
 		        npasmx);
 		return 1;
 	}
-	printf("Hem calculat la posició en temps %lf amb %d iteracions\n",T,i);
-	for(i=0; i<n;i++){
-		printf("%lf, ", x[i]);
-	}
-	printf("\n");
+	/*
+	printf("Condicns finals\n");
+	for(i=0;i<n;i++) printf("%lf ", x[i]);
+	*/
 	return 0;
 }
 

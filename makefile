@@ -24,7 +24,8 @@ PERIOD=$(LIB)$(_PERIOD)
 #executables a la carpeta principal
 EXECS = rf_pendol\
 		flux_pendol\
-		period_pendol
+		period_pendol\
+		period_halo
 
 
 # Coses que fan falta en general per a fer  tot lo numèric
@@ -34,7 +35,8 @@ NUMERIC = $(EDOS)flux.o \
 		  $(PERIOD)troba_periodiques.o 
 # camps amb els que podem treballar 
 FIELDLIST = $(FIELDS)pendol.o \
-		    $(FIELDS)pendol_var.o 
+		    $(FIELDS)var_pendol.o \
+		    $(FIELDS)rtbp.o
 
 LIBRARY = $(NUMERIC) \
           $(FIELDS)
@@ -69,13 +71,25 @@ remake: realclean all libraries
 # ! ---------- Programes Finals -------------- !
 
 #construeix el programa que et dona òrbites del pèndol
+period_halo:   period_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o 
+
+	gcc -Wall -o period_halo period_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o \
+	           -lm
+
+
+
+#construeix el programa que et dona òrbites del pèndol
 period_pendol: period_pendol.c \
 			   $(NUMERIC) \
-			   $(FIELDS)pendol_var.o
+			   $(FIELDS)var_pendol.o 
 
 	gcc -Wall -o period_pendol period_pendol.c \
 			   $(NUMERIC) \
-			   $(FIELDS)pendol_var.o \
+			   $(FIELDS)var_pendol.o \
 	           -lm
 
 #construeix el programa que et dona òrbites del pèndol
@@ -89,8 +103,8 @@ rf_pendol: rf_pendol.c \
 			   -lm
 
 #construeix el programa que et dona el flux del pèndol
-flux_pendol: flux_pendol.c $(FIELDS)pendol.o $(EDOS)flux.o 
-	gcc -Wall -o flux_pendol flux_pendol.c $(FIELDS)pendol.o $(EDOS)flux.o $(EDOS)rk78.o -lm
+flux_pendol: flux_pendol.c $(FIELDS)var_pendol.o $(EDOS)flux.o 
+	gcc -Wall -o flux_pendol flux_pendol.c $(FIELDS)var_pendol.o $(EDOS)flux.o $(EDOS)rk78.o -lm
 
 
 
@@ -103,10 +117,12 @@ $(FIELDS)pendol.o: $(FIELDS)pendol.c
 	gcc -c -Wall -o $(FIELDS)pendol.o $(FIELDS)pendol.c -lm
 
 #codi del pendol amb variacionals
-$(FIELDS)pendol_var.o: $(FIELDS)pendol_var.c
-	gcc -c -Wall -o $(FIELDS)pendol_var.o $(FIELDS)pendol_var.c -lm
+$(FIELDS)var_pendol.o: $(FIELDS)var_pendol.c
+	gcc -c -Wall -o $(FIELDS)var_pendol.o $(FIELDS)var_pendol.c -lm
 
-
+#codi del problema de 3 cossos
+$(FIELDS)rtbp.o: $(FIELDS)rtbp.c
+	gcc -c -Wall -o $(FIELDS)rtbp.o $(FIELDS)rtbp.c -lm
 
 
 
