@@ -10,7 +10,11 @@ Jaume de Dios: dec 2015
 
 - Per a netejar de codis objecte: "make clean"
 
-##2. Estructura:
+##2. Utilitzar els programes:
+
+EN la carpeta exercicis hi ha els exercicis fets a classe, cadascuna amb un fitxer bash que genera els resultats.
+
+##3. Estructura:
 
 
 - lib/
@@ -35,6 +39,15 @@ Jaume de Dios: dec 2015
         
         + qrres.c/h
             [_Resolució de sistemes d'equacions lineals sobredeterminats mitjançant el mètode de Housholder_]
-	- lib/newton
-		[_implementació del mètode de Newton en diverses variables utilitzant linalg_] 
-        + Working on it right now!
+
+    - lib/newton
+        [_implementació del mètode de Newton en diverses variables utilitzant linalg_]
+
+        + newton.c/h
+            [_Implementació del mètode de Newton en diverses variables_]
+
+    - lib/period
+        [_aplicació del mètode de newton per a trobar òrbites periòdiques en sistemes hamiltonians_]
+
+        + troba_periodiques.c/h
+            [_Troba orbites periodiques_]

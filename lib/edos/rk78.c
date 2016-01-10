@@ -100,7 +100,7 @@ int rk78 (double *t, double x[], double *h,
            /*   noti's que NO es la (7.2.5.17)).          */
    if (fabs(*h)<hmin) {      /* Fem que estigui dins */
       (*h)=SGN(*h)*hmin;
-      fprintf(stderr,"rk78():: t %G : ajusto a pasmin %G !!\n", *t, hmin);
+      fprintf(stderr,"rk78():: t %G : ajusto a pasmin %G !! [tol= %G, n=%d]\n", *t, hmin, tol, n);
    }
    else if (fabs(*h)>hmax) { /* els limits permesos. */
       (*h)=SGN(*h)*hmax;

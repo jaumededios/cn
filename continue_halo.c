@@ -5,6 +5,19 @@
 #include "lib/period/troba_periodiques.h"
 #include "lib/fields/rtbp.h"
 
+
+/*
+Programa que troba la continuació d'`orbites peròdiques augmentant
+i/o disminuint l'hamiltonià gradualment. 
+
+Primer calculem les condicions de la òrbita en condicions de h molt 
+properes, i a partir d'aqui anem avançant a poc a poc utilitzant una
+extrapolació lineal a partir dels dos punts anteriors calculats.
+
+El programa funcion practicament igual que el troba periòdiques.c
+Amb el programa linker.c es pot fer continue_halo|linker|flux per a
+
+*/
 int main(void){
 	int iret;
 	int i,j;

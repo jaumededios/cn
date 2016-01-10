@@ -1,9 +1,9 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "lib/edos/flux.h"
+#include "../../lib/edos/flux.h"
 
-#include "lib/fields/var_pendol.h"
+#include "../../lib/fields/var_pendol.h"
 
 #define N 6
 
@@ -22,7 +22,7 @@ int main (int argc, char *argv[]) {
       return -1;
    }
    while (scanf("%lf %lf %lf %lf",&x[0],&x[1],&h0, &T)==4) {
-      printf("x0,x1: %lf,%lf\n", x[0],x[1]);
+      fprintf(stderr, "x0,x1: %lf,%lf\n", x[0],x[1]);
       t=0; h=h0;
 
       flux(&t,x,&h,T,hmin,hmax,tol,4E2,N,pendol,NULL);
