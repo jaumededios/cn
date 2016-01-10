@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "lib/period/troba_periodiques.h"
-#include "lib/fields/rtbp.h"
+#include "../../lib/period/troba_periodiques.h"
+#include "../../lib/fields/rtbp.h"
 
 int main(void){
 
@@ -37,7 +37,10 @@ int main(void){
 	fprintf(stderr,"Coordenades del resultat:\n");
 	fprintf(stderr,"q = (%.10G,\t%.10G,\t%.10G)\n", xx[1],xx[2],xx[3]);
 	fprintf(stderr,"p = (%.10G,\t%.10G,\t%.10G)\n", xx[4],xx[5],xx[6]);
-	fprintf(stderr,"T =  %G", xx[0]);
+	fprintf(stderr,"T =  %G\n", xx[0]);
+	for(m=0;m<=6;m++){
+		printf("%.16G ", xx[m]);
+	}
 	return 0;
 
 }

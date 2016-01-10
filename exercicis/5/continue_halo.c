@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/period/troba_periodiques.h"
-#include "lib/fields/rtbp.h"
+#include "../../lib/period/troba_periodiques.h"
+#include "../../lib/fields/rtbp.h"
 
 
 /*
@@ -23,7 +23,6 @@ int main(void){
 	int i,j;
 	double tmp;
 	double o_xx[7];
-
 	int m=3;
 	double hh=-1.500384;
 	double xx[7]={3.051858, 
@@ -53,9 +52,9 @@ int main(void){
 	camp,
 	prm);
 	memcpy(o_xx, xx, 7*sizeof(double));
-	double eps=.5E-6;
-	for(j=0; j<700;j++){
-		hh+=eps;
+	double eps=.5E-7;
+	for(j=0; j<7000;j++){
+		hh-=eps;
 		if(i==0) hh-=9*eps/10;
 		for(i=0; i<7;i++){
 			tmp=xx[i];
@@ -77,7 +76,12 @@ int main(void){
 		fprintf(stderr,"p = (%.10G,\t%.10G,\t%.10G)\n", xx[4],xx[5],xx[6]);
 		fprintf(stderr,"T =  %G\n", xx[0]);
 		fprintf(stderr,"H =  %G\n", hh);
-		printf("-----------------------------------\n");
+		fprintf(stderr,"-----------------------------------\n");
+		if(j%100) continue;
+		for(i=0;i<=6;i++){
+			printf("%.16G ", xx[i]);
+		}
+		printf("\n");
 	}
 	return 0;
 

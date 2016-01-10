@@ -28,9 +28,13 @@ EXECS = $(PARTS)1/rf_pendol\
 		\
 		$(PARTS)2/differential\
 		\
-		period_pendol\
-		period_halo\
-		continue_halo
+		$(PARTS)3/qrres_tester\
+		\
+		$(PARTS)4/period_pendol\
+		$(PARTS)4/period_halo\
+		$(PARTS)4/rtbp_orbit\
+		\
+		$(PARTS)5/continue_halo
 
 
 # Coses que fan falta en general per a fer  tot lo numèric
@@ -83,37 +87,6 @@ remake: realclean all libraries
 # ! ---------- Programes Finals -------------- !
 
 
-#construeix el programa que et continua el halo
-continue_halo: continue_halo.c \
-			   $(NUMERIC) \
-			   $(FIELDS)rtbp.o 
-
-	gcc -Wall -o continue_halo continue_halo.c \
-			   $(NUMERIC) \
-			   $(FIELDS)rtbp.o \
-	           -lm
-
-#construeix el programa que et dona òrbites halo
-period_halo:   period_halo.c \
-			   $(NUMERIC) \
-			   $(FIELDS)rtbp.o 
-
-	gcc -Wall -o period_halo period_halo.c \
-			   $(NUMERIC) \
-			   $(FIELDS)rtbp.o \
-	           -lm
-
-
-
-#construeix el programa que et dona òrbites del pèndol
-period_pendol: period_pendol.c \
-			   $(NUMERIC) \
-			   $(FIELDS)var_pendol.o 
-
-	gcc -Wall -o period_pendol period_pendol.c \
-			   $(NUMERIC) \
-			   $(FIELDS)var_pendol.o \
-	           -lm
 
 #construeix el programa que et dona òrbites del pèndol
 $(PARTS)1/rf_pendol: $(PARTS)1/rf_pendol.c \
@@ -174,6 +147,58 @@ $(PARTS)2/differential: $(PARTS)2/differential.c \
 					   $(FIELDS)ex_2.o \
 					   $(EDOS)flux.o \
 					   $(EDOS)rk78.o -lm
+
+#construeix el programa que et representa Lorentz
+$(PARTS)3/qrres_tester: $(PARTS)3/qrres_tester.c \
+					   $(LINALG)qrres.o 
+
+	gcc -Wall -o $(PARTS)3/qrres_tester $(PARTS)3/qrres_tester.c \
+					   $(LINALG)qrres.o -lm
+
+
+#construeix el programa que et dona òrbites halo
+$(PARTS)4/period_halo:   $(PARTS)4/period_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o 
+
+	gcc -Wall -o $(PARTS)4/period_halo $(PARTS)4/period_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o \
+	           -lm
+
+
+
+#construeix el programa que et dona òrbites del pèndol
+$(PARTS)4/period_pendol: $(PARTS)4/period_pendol.c \
+			   $(NUMERIC) \
+			   $(FIELDS)var_pendol.o 
+
+	gcc -Wall -o $(PARTS)4/period_pendol $(PARTS)4/period_pendol.c \
+			   $(NUMERIC) \
+			   $(FIELDS)var_pendol.o \
+	           -lm
+
+
+#construeix el programa que et representa el rtbp
+$(PARTS)4/rtbp_orbit: $(PARTS)4/rtbp_orbit.c \
+					   $(FIELDS)rtbp.o \
+					   $(EDOS)rk78.o 
+
+	gcc -Wall -o $(PARTS)4/rtbp_orbit $(PARTS)4/rtbp_orbit.c \
+					   $(FIELDS)rtbp.o \
+					   $(EDOS)flux.o \
+					   $(EDOS)rk78.o -lm
+
+
+#construeix el programa que et continua el halo
+$(PARTS)5/continue_halo: $(PARTS)5/continue_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o 
+
+	gcc -Wall -o $(PARTS)5/continue_halo $(PARTS)5/continue_halo.c \
+			   $(NUMERIC) \
+			   $(FIELDS)rtbp.o \
+	           -lm
 
 
 

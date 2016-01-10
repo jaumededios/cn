@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "lib/period/troba_periodiques.h"
-#include "lib/fields/var_pendol.h"
+#include "../../lib/period/troba_periodiques.h"
+#include "../../lib/fields/var_pendol.h"
 
 int main(void){
 

@@ -5,18 +5,19 @@
 
 #include "../../lib/linalg/qrres.h"
 
-srand(1234);
-
+#define MAX(a,b) ((a>b)?a:b)
+#define ABS(a) ((a>0)?a:-a)
 int main(){
-	int m=10,n,i, s;
+	int m=2000,n,i,j,s;
 	double error;
 	time_t t0, t1;
 	double* matrix = (double*)malloc(m*m*sizeof(double));
 	double* b = (double*)malloc(m*sizeof(double));
 	double* x = (double*)malloc(m*sizeof(double));
 	double*dr = (double*)malloc(m*sizeof(double));
-	for(s=0;s<m;s++){
-		n=s;
+	srand(1234);
+	for(s=0;s<m/25;s++){
+		n=s*25;
 		for(i=0; i<n*n;i++){
 			matrix[i]=((double)rand())/RAND_MAX;
 		}
@@ -31,9 +32,15 @@ int main(){
 		qrres (n, n, matrix, dr, b, x);
 		t1=clock();
 		error=0;
-		for(i=0;i<n;i++) error=max(error, abs(x[i]-1));
+
+		printf("\n");
+		for(i=0;i<n;i++) error=MAX(error, ABS(x[i]-1));
 
 		printf("%d %G %G\n", n, error, ((double)(t1-t0))/CLOCKS_PER_SEC );
+	    fprintf(stderr,"%d %G %G\n", n, error, ((double)(t1-t0))/CLOCKS_PER_SEC );
 	}
 	return 0;
 }
+
+#undef MAX
+#undef ABS
