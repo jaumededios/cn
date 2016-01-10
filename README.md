@@ -27,8 +27,11 @@ En la carpeta exercicis hi ha els exercicis proposats, fets a partir dels progra
     	[_els camps d'exemple, per a utilitzar les llibreries_]
         + pendol.c/h [_camp del pèndol_]
         + pendol_var.c/h [_camp del pèndol amb les variacionals_]
+        + ex_1.4.c/h [_camps de l'apartat 1.4_]
+        + ex_2.c/h [_camps de l'apartat 2_]
+        + rtbp.c/h [_camp del problema de tres cossos restringit_]
         + lorentz.c/h [_camp de l'atractor de lorentz_]
-        + prova_var.c/h [_camp de prova donat, amb les seves variacionals_]
+
         
 	- lib/edos
 		[_fitxers relacionats amb la solucio de edos_]
