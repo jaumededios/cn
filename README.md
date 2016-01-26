@@ -18,6 +18,7 @@ En la carpeta exercicis hi ha els exercicis proposats, fets a partir dels progra
  - L'Exercici 3 consistia en provar el mètode QR en matrius aleatòries, per a veure com evolucionava el temps d'execució i l'error. Cal fer un piping ./qrres_tester>result.txt, i despres utilitzar el plot.gp via gnuplot per a representar-ho.
  - L'exercici 4 conté un primer programa, que troba la òrbita periòdica (period_halo). Aquest programa es pot enviar al programa rtbp_orbit, (./period_halo|./rtbp_orbit>result.txt) per a representar-ho amb gnuplot amb el fitxer dibuix_rtbp.gp
  - L'exercici 5 conté un únic programa que continua les òrbites periòdiques, fent una extrapolació lineal a partir dels dos darrers punts calculats. Fnciona exactament igual que l'anterior (./continue_halo|./../4/rtbp_orbit>result.txt)
+
 ## 3. Estructura:
 
 
