@@ -40,7 +40,7 @@ En la carpeta exercicis hi ha els exercicis proposats, fets a partir dels progra
 		+ flux.c/h
         	[_té la funció flux, que executa el rk78 entre temps fixats_]
         + rkf78.c/h
-            [_Implementació de Runge-Kutta-Fehlberg amb ordres 7 i 8 _]
+            [_Implementació de Runge-Kutta-Fehlberg amb ordres 7 i 8_]
             
 	- lib/linalg
 		[_fitxers relacionats amb àlgebra lineal_]
