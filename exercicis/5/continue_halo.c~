@@ -71,7 +71,7 @@ int main(void){
 			fprintf(stderr,"No s'han pogut continuar els calculs per a j>%d\n",j);
 			return -1;
 		}
-		if(j%100) continue;
+		if(j%500) continue;
 		fprintf(stderr,"n:%d\n",j);
 		fprintf(stderr,"Coordenades del resultat:\n");
 		fprintf(stderr,"q = (%.10G,\t%.10G,\t%.10G)\n", xx[1],xx[2],xx[3]);

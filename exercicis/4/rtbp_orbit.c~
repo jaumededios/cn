@@ -10,7 +10,7 @@ int main (int argc, char *argv[]) {
    double x[6], T; 
    int i;
 
-   while (scanf("%lf", &T) == 1){
+   while (scanf("%lf", &T) ){
       for(i=0; i<6;i++) scanf("%lf", x+i);
 
       double h=1.1E-6;

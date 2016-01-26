@@ -39,29 +39,19 @@ void bruteForceDifferential(
    double xp[n];
    double t0=*t;
    double h0=*h;
-
-   //per a cada columna, calcula el camp en x+epsilon*e_i
-   // i en x - epsilon*e_i i en guarda la diferència a la matriu f.
-   //(dividida entre 2 epsilon)
    for(i=0; i<n;i++){
-
       memcpy(xp,x,n*sizeof(double));
-      xp[i]-=epsilon; //construeix el punt x-epsilon
-
+      xp[i]-=epsilon;
       memcpy(f+i*n, x, n*sizeof(double));
-      f[i*n+i]+=epsilon; //construeix el punt x+epsilon
 
-      //calcula f(x-epsilon)
+      f[i*n+i]+=epsilon;
       *t=t0;
       *h=h0;
       flux(t,xp   ,h,T,pasmin,pasmax,tol,npasmx,6,camp,prm);
-
-      //calcula f(x-epsilon)
       *t=t0;
       *h=h0;
       flux(t,f+i*n,h,T,pasmin,pasmax,tol,npasmx,6,camp,prm);
 
-      //calcula la derivada discreta
       for(j=0;j<n;j++){
          f[i*n+j]=(f[i*n+j]-xp[j])/(2*epsilon);
       }
